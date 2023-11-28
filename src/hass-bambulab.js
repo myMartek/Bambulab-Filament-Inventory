@@ -1,0 +1,80 @@
+import axios from 'axios';
+import fs from 'fs/promises';
+import { v4 as uuidv4 } from 'uuid';
+
+let usagedata;
+
+try {
+  usagedata = JSON.parse(await fs.readFile('hass-data.json', 'utf-8'));
+} catch (e) {
+  usagedata = {};
+}
+
+const getAMSTrays = async (sensor) => {
+  try {
+    const hassUrl = process.env.HASS_URL;
+    const token = process.env.HASS_TOKEN;
+
+    // Get all states for the sensor
+    const { data } = await axios.get(`${hassUrl}/api/states/${sensor}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (data?.attributes?.tag_uid !== '0000000000000000' && data?.attributes?.remain !== -1) {
+      return {
+        type: data.attributes.type,
+        manufacturer: 'BambuLab',
+        tracking: true,
+        size: 1000,
+        tag_uid: data.attributes.tag_uid,
+        remain: data.attributes.remain,
+        color: data.attributes.color,
+        empty: data.attributes.empty,
+        name: data.attributes.name
+      };
+    }
+
+    
+  } catch (error) {
+    console.log(error);
+  }
+
+  return null;
+};
+
+export const getHassData = async () => {
+  let sensors = process.env.HASS_SENSORS.split(',');
+  let promises = [];
+
+  for (let i = 0; i < sensors.length; i++) {
+    for (let j = 1; j <= 4; j++) {
+      promises.push(getAMSTrays(`${sensors[i]}_tray_${j}`));
+    }
+  }
+
+  const trays = (await Promise.all(promises)).filter(e => e !== null);
+
+  trays.forEach((tray) => {
+    const tag_uid = tray.tag_uid;
+
+    if (!usagedata[tag_uid]) {
+      usagedata[tag_uid] = tray;
+    } else {
+      usagedata[tag_uid].remain = tray.remain;
+    }
+  });
+
+  const hassDataJson = JSON.stringify(usagedata);
+
+  await fs.writeFile('hass-data.json', hassDataJson);
+};
+
+// Run once on startup
+getHassData();
+
+// Run every minute
+setInterval(getHassData, 1000 * 60);
+
+export default usagedata;
