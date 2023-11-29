@@ -87,15 +87,21 @@
                       <v-col
                         cols="12"
                       >
-                        <v-text-field
+                        <v-slider
                           v-model="addModel.remain"
                           :rules="requiredRules"
                           type="number"
                           :min="0"
                           :max="100"
+                          :step="1"
                           label="Restmenge"
                           required
-                        ></v-text-field>
+                          thumb-label="always"
+                        >
+                          <template v-slot:thumb-label>
+                            <span style="white-space: nowrap;">{{ addModel.remain }} %</span>
+                          </template>
+                        </v-slider>
                       </v-col>
                     </v-row>
 
@@ -232,6 +238,16 @@
 
     if (success) {
       addForm.value.reset();
+      addModel.value = {
+        manufacturer: '',
+        type: '',
+        name: '',
+        color: '#ffffffff',
+        size: 1000,
+        remain: 100,
+        empty: false
+      };
+
       openAddDialog.value = false;
       toast.success('Filament erfolgreich hinzugefügt');
     } else {
