@@ -68,13 +68,19 @@ app.post('/update', async (req, res) => {
     tag_uid = uuidv4();
   }
 
+  if (req.body.color?.length === 7) {
+    req.body.color = req.body.color + 'FF';
+  }
+
+  req.body.color = req.body.color.toUpperCase();
+
   if (!data[tag_uid]) {
     data[tag_uid] = {
       tag_uid,
       type: 'Unknown',
       manufacturer: 'Unknown',
       remain: 0,
-      color: '#ffffffff',
+      color: '#FFFFFFFF',
       empty: true,
       name: 'Unknown',
       size: 1000,

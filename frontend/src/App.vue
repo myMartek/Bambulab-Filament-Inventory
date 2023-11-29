@@ -10,9 +10,9 @@
   const router = useRouter();
   const store = useAppStore();
 
-  const isLoggedIn = computed(() => store.isLoggedIn)
+  const isLoggedIn = computed(() => store.isLoggedIn);
 
-  if (isLoggedIn.value === null) {
+  if (!isLoggedIn.value) {
     router.push({ name: 'Login' });
   }
 </script>

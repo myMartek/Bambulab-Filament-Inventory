@@ -6,12 +6,22 @@ const host = import.meta.env.DEV ? 'http://localhost:3000' : '';
 export const useAppStore = defineStore('app', {
   state: () => ({
     login: sessionStorage.getItem('token') || null,
-    filaments: []
+    filaments: [],
+    filter: null
   }),
   getters: {
     isLoggedIn: (state) => !!state.login,
+    autocomplete: (state) => {
+      return (key) => state.filaments.map((filament) => filament[key]).filter((value, index, self) => self.indexOf(value) === index);
+    },
     filamentList: (state) => {
-      let filaments = state.filaments.reduce((acc, filament) => {
+      let filaments = state.filaments.filter(e => {
+        if (!state.filter) {
+          return true;
+        }
+
+        return e.type === state.filter;
+      }).reduce((acc, filament) => {
         let key = filament.color + filament.type + filament.manufacturer;
 
         if (!acc[key]) {
@@ -35,6 +45,9 @@ export const useAppStore = defineStore('app', {
     }
   },
   actions: {
+    setFilter(filter) {
+      this.filter = filter;
+    },
     async getFilaments() {
       if (!this.isLoggedIn) {
         return;
@@ -47,6 +60,27 @@ export const useAppStore = defineStore('app', {
       });
 
       this.filaments = data;
+    },
+    async addFilament(filament) {
+      try {
+        if (!this.isLoggedIn) {
+          return false;
+        }
+
+        const { data } = await axios.post(host + '/update', filament, {
+          headers: {
+            Authorization: `Bearer ${this.login}`,
+          },
+        });
+
+        this.filaments = data;
+
+        return true;
+      } catch (error) {
+        console.log(error);
+      }
+
+      return false;
     },
     async checkLogin(username, password) {
       try {

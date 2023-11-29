@@ -14,7 +14,6 @@
               <v-list rounded="lg">
                 <v-list-item
                   color="grey-lighten-4"
-                  link
                   title="Filter"
                 ></v-list-item>
 
@@ -22,15 +21,15 @@
 
                 <v-list-item
                   color="grey-lighten-4"
-                  link
+                  @click="store.setFilter(null)"
                   title="Alle"
                 ></v-list-item>
 
                 <v-list-item
-                  v-for="n in 5"
-                  :key="n"
-                  link
-                  :title="`Typ ${n}`"
+                  v-for="(type) in autocomplete('type')"
+                  :key="type"
+                  @click="store.setFilter(type)"
+                  :title="type"
                 ></v-list-item>
               </v-list>
             </v-sheet>
@@ -52,4 +51,10 @@
 
 <script setup>
   import DefaultView from './DefaultView.vue';
+  import { storeToRefs } from 'pinia';
+  import { useAppStore } from '@/store/app';
+
+  const store = useAppStore();
+
+  const { autocomplete } = storeToRefs(store);
 </script>
