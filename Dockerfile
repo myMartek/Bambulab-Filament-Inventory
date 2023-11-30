@@ -1,0 +1,24 @@
+FROM node:18
+
+# Create app directory
+WORKDIR /usr/src/app
+
+# Install app dependencies
+COPY package*.json ./
+
+RUN npm install
+
+# Bundle app source
+
+COPY . .
+
+EXPOSE 3000
+
+WORKDIR /usr/src/app/frontend
+RUN npm install
+RUN npm run build
+
+WORKDIR /usr/src/app
+
+CMD [ "node", "." ]
+
