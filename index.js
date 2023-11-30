@@ -20,19 +20,38 @@ app.use(express.json());
 app.use(cors());
 
 // Use Express JWT to validate JWT tokens
+// Disable JWT validation for /oauth/token / and all static files
 app.use(
   expressjwt({
     secret,
     algorithms: ['HS256'],
-  }).unless({ path: ['/oauth/token'] })
+  }).unless((path) => {
+    var url = path.originalUrl;
+    
+    if (url === '/oauth/token') {
+      return true;
+    }
+
+    if (url === '/') {
+      return true;
+    }
+
+    if (url.startsWith('/assets/')) {
+      return true;
+    }
+
+    if (url.startsWith('/favicon.ico')) {
+      return true;
+    }
+
+    return false;
+  })
 );
 
 app.get('/', async (req, res) => {
-  const pack = await fs.readFile('package.json', 'utf-8');
+  let content = await fs.readFile('./frontend/dist/index.html', 'utf-8');
 
-  res.json({
-    version: JSON.parse(pack).version
-  });
+  res.send(content);
 });
 
 // Implement (deprecated) OAuth 2.0 password grant
@@ -108,6 +127,9 @@ app.post('/update', async (req, res) => {
 
   res.send(Object.keys(data).map(key => data[key]));
 });
+
+// deliver static files from frontend/dist
+app.use(express.static('frontend/dist'));
 
 app.listen(process.env.PORT, () => {
   console.log(`App listening on port ${process.env.PORT}!`);
