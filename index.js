@@ -61,6 +61,16 @@ app.get('/filaments', async (req, res) => {
   res.send(Object.keys(data).map(key => data[key]));
 });
 
+app.post('/delete', async (req, res) => {
+  const { tag_uid } = req.body;
+
+  delete data[tag_uid];
+
+  await fs.writeFile('./data/hass-data.json', JSON.stringify(data));
+
+  res.send(Object.keys(data).map(key => data[key]));
+});
+
 app.post('/update', async (req, res) => {
   let { tag_uid } = req.body;
 
@@ -94,7 +104,7 @@ app.post('/update', async (req, res) => {
     };
   }
 
-  await fs.writeFile('hass-data.json', JSON.stringify(data));
+  await fs.writeFile('./data/hass-data.json', JSON.stringify(data));
 
   res.send(Object.keys(data).map(key => data[key]));
 });

@@ -185,91 +185,99 @@
         </v-btn>
       </template>
     </v-data-table>
+
+    <Filament-Details ref="filamentDetails"></Filament-Details>
   </v-container>
 </template>
 
 <script setup>
-  import { onMounted, ref } from 'vue';
-  import { useAppStore } from '@/store/app';
-  import { storeToRefs } from 'pinia';
-  import { toast } from 'vue3-toastify';
-  import 'vue3-toastify/dist/index.css';
+import { onMounted, ref } from 'vue';
+import { useAppStore } from '@/store/app';
+import { storeToRefs } from 'pinia';
+import { toast } from 'vue3-toastify';
+import FilamentDetails from '@/components/FilamentDetails.vue';
 
-  const requiredRules = [
-    v => !!v || 'Eingabe erforderlich'
-  ];
+const requiredRules = [
+  v => !!v || 'Eingabe erforderlich'
+];
 
-  const store = useAppStore();
+const store = useAppStore();
 
-  const { autocomplete } = storeToRefs(store);
+const { autocomplete } = storeToRefs(store);
 
-  const search = ref('');
-  const valid = ref(false);
-  const openAddDialog = ref(false);
-  const addForm = ref(null)
-  const addModel = ref({
-    manufacturer: '',
-    type: '',
-    name: '',
-    color: '#ffffffff',
+const search = ref('');
+const valid = ref(false);
+const openAddDialog = ref(false);
+const addForm = ref(null);
+const filamentDetails = ref(null);
+
+const addModel = ref({
+  manufacturer: '',
+  type: '',
+  name: '',
+  color: '#ffffffff',
+  size: 1000,
+  remain: 100,
+  empty: false
+});
+
+const headers = [
+  { title: 'Hersteller', key: 'manufacturer' },
+  { title: 'Typ', key: 'type' },
+  { title: 'Name', key: 'name' },
+  { title: 'Farbe', key: 'color' },
+  { title: 'Rollen', key: 'filaments' },
+  { title: 'Rest', key: 'remain' },
+  { title: 'Aktionen', key: 'actions', sortable: false }
+];
+
+onMounted(() => {
+    if (store.isLoggedIn) {
+    store.getFilaments();
+  }
+});
+
+const addFilament = async () => {
+  let success = store.addFilament(addModel.value);
+
+  if (success) {
+    addForm.value.reset();
+    addModel.value = {
+      manufacturer: '',
+      type: '',
+      name: '',
+      color: '#ffffffff',
+      size: 1000,
+      remain: 100,
+      empty: false
+    };
+
+    openAddDialog.value = false;
+    toast.success('Filament erfolgreich hinzugefügt');
+  } else {
+    toast.error('Fehler beim Hinzufügen des Filaments');
+  }
+};
+
+const additionalFilament = async (item) => {
+  let success = store.addFilament({
+    manufacturer: item.manufacturer,
+    type: item.type,
+    name: item.name,
+    color: item.color,
     size: 1000,
     remain: 100,
     empty: false
   });
 
-  const headers = [
-    { title: 'Hersteller', key: 'manufacturer' },
-    { title: 'Typ', key: 'type' },
-    { title: 'Name', key: 'name' },
-    { title: 'Farbe', key: 'color' },
-    { title: 'Rollen', key: 'filaments' },
-    { title: 'Rest', key: 'remain' },
-    { title: 'Aktionen', key: 'actions', sortable: false }
-  ];
+  if (success) {
+    toast.success('Filament erfolgreich hinzugefügt');
+  } else {
+    toast.error('Fehler beim Hinzufügen des Filaments');
+  }
+};
 
-  onMounted(() => {
-     if (store.isLoggedIn) {
-      store.getFilaments();
-    }
-  });
-
-  const addFilament = async () => {
-    let success = store.addFilament(addModel.value);
-
-    if (success) {
-      addForm.value.reset();
-      addModel.value = {
-        manufacturer: '',
-        type: '',
-        name: '',
-        color: '#ffffffff',
-        size: 1000,
-        remain: 100,
-        empty: false
-      };
-
-      openAddDialog.value = false;
-      toast.success('Filament erfolgreich hinzugefügt');
-    } else {
-      toast.error('Fehler beim Hinzufügen des Filaments');
-    }
-  };
-
-  const additionalFilament = async (item) => {
-    let success = store.addFilament({
-      manufacturer: item.manufacturer,
-      type: item.type,
-      name: item.name,
-      color: item.color,
-      size: 1000,
-      remain: 100,
-      empty: false
-    });
-
-    if (success) {
-      toast.success('Filament erfolgreich hinzugefügt');
-    } else {
-      toast.error('Fehler beim Hinzufügen des Filaments');
-    }
-  };
+const editFilament = async (item) => {
+  filamentDetails.value.open(item.filaments);
+};
 </script>

@@ -48,6 +48,49 @@ export const useAppStore = defineStore('app', {
     setFilter(filter) {
       this.filter = filter;
     },
+    async deleteFilament(tag_uid) {
+      try {
+        if (!this.isLoggedIn) {
+          return false;
+        }
+
+        const { data } = await axios.post(host + '/delete', { tag_uid }, {
+          headers: {
+            Authorization: `Bearer ${this.login}`,
+          },
+        });
+
+        this.filaments = data;
+
+        return true;
+      } catch (error) {
+        console.log(error);
+      }
+
+      return false;
+    },
+    async updateFilament(filament) {
+      try {
+        if (!this.isLoggedIn) {
+          return false;
+        }
+
+        const { data } = await axios.post(host + '/update', filament, {
+          headers: {
+            Authorization: `Bearer ${this.login}`,
+          },
+        });
+
+        this.filaments = data;
+
+        return true;
+      } catch (error) {
+        console.log(error);
+      }
+
+      return false;
+    },
+
     async getFilaments() {
       if (!this.isLoggedIn) {
         return;
