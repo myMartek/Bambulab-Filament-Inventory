@@ -22,7 +22,7 @@ export const useAppStore = defineStore('app', {
 
         return e.type === state.filter;
       }).reduce((acc, filament) => {
-        let key = filament.color + filament.type + filament.manufacturer;
+        let key = filament.color + filament.type + filament.name + filament.manufacturer;
 
         if (!acc[key]) {
           acc[key] = {

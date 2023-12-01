@@ -56,11 +56,11 @@ export const getHassData = async () => {
 
   trays.forEach((tray) => {
     const tag_uid = tray.tag_uid;
-    const key = tray.color + tray.type + tray.manufacturer;
+    const key = tray.color + tray.type + tray.name + tray.manufacturer;
 
     if (!usagedata[tag_uid]) {
       let notTracked = Object.values(usagedata).find((tray) => {
-        const localkey = tray.color + tray.type + tray.manufacturer;
+        const localkey = tray.color + tray.type + tray.name + tray.manufacturer;
 
         if (localkey === key && !tray.tracking) {
           return true;
