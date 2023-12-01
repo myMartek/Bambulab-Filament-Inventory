@@ -18,7 +18,7 @@
                 {{ t('$vuetify.filamentDetails.remain') }}
               </th>
               <th class="text-left">
-                {{ t('$vuetify.filamentDetails.aktions') }}
+                {{ t('$vuetify.filamentDetails.actions') }}
               </th>
             </tr>
           </thead>
