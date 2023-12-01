@@ -17,7 +17,7 @@ import en from '@/locale/en.js';
 export default createVuetify({
   locale: {
     // get locale from browser
-    locale: navigator.language === 'de' ? 'de' : 'en',
+    locale: navigator.language.substring(0, 2) === 'de' ? 'de' : 'en',
     fallback: 'en',
     messages: { de, en },
   },
