@@ -167,7 +167,7 @@
       :items-per-page="-1"
     >
       <template v-slot:item.color="{ item }">
-        <v-avatar variant="elevated" :color="item.color"></v-avatar>&nbsp;{{ item.colorname }}
+        <v-avatar variant="elevated" :color="item.color"></v-avatar>
       </template>
 
       <template v-slot:item.filaments="{ item }">
@@ -246,6 +246,7 @@ const headers = [
   { title: t('$vuetify.homeView.form.type'), key: 'type' },
   { title: t('$vuetify.homeView.form.name'), key: 'name' },
   { title: t('$vuetify.homeView.form.color'), key: 'color' },
+  { title: t('$vuetify.homeView.form.colorname'), key: 'colorname' },
   { title: t('$vuetify.homeView.form.spools'), key: 'filaments' },
   { title: t('$vuetify.homeView.form.remain'), key: 'remain' },
   { title: t('$vuetify.homeView.form.actions'), key: 'actions', sortable: false }
