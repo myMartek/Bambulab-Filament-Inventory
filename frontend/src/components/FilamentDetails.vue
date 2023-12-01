@@ -1,5 +1,5 @@
 <template>
-  <v-dialog width="1200" v-model="show">
+  <v-dialog width="1400" v-model="show">
     <v-card :title="t('$vuetify.filamentDetails.title')">
       <v-card-text>
         <v-table>
@@ -10,6 +10,9 @@
               </th>
               <th class="text-left">
                 {{ t('$vuetify.filamentDetails.name') }}
+              </th>
+              <th class="text-left">
+                {{ t('$vuetify.filamentDetails.colorname') }}
               </th>
               <th class="text-left">
                 {{ t('$vuetify.filamentDetails.size') }}
@@ -34,6 +37,14 @@
                   :label="t('$vuetify.filamentDetails.name')"
                   hide-details
                   required
+                  @update:modelValue="debouncedUpdate(item)"
+                ></v-text-field>
+              </td>
+              <td width="150">
+                <v-text-field
+                  v-model="item.colorname"
+                  :label="t('$vuetify.filamentDetails.colorname')"
+                  hide-details
                   @update:modelValue="debouncedUpdate(item)"
                 ></v-text-field>
               </td>

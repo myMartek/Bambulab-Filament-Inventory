@@ -1,11 +1,15 @@
 import axios from 'axios';
 import fs from 'fs/promises';
-import { v4 as uuidv4 } from 'uuid';
 
 let usagedata;
 
 try {
   usagedata = JSON.parse(await fs.readFile('./data/hass-data.json', 'utf-8'));
+  Object.values(usagedata).forEach((filament) => {
+    if (!filament.colorname) {
+      filament.colorname = '';
+    }
+  });
 } catch (e) {
   usagedata = {};
 }
@@ -31,6 +35,7 @@ const getAMSTrays = async (sensor) => {
         tag_uid: data.attributes.tag_uid,
         remain: data.attributes.remain,
         color: data.attributes.color,
+        colorname: '',
         empty: data.attributes.empty,
         name: data.attributes.name
       };

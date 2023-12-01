@@ -31,6 +31,7 @@ language.homeView = {
     size: 'Size',
     remain: 'Remaining',
     color: 'Color',
+    colorname: 'Colorname',
     spools: 'Spools',
     actions: 'Actions'
   }
@@ -42,6 +43,7 @@ language.filamentDetails = {
   name: 'Name',
   size: 'Size',
   remain: 'Remaining',
+  colorname: 'Colorname',
   remaining: 'Remaining amount',
   actions: 'Actions',
   successDelete: 'Filament deleted successfully',

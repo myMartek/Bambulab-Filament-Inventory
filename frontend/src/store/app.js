@@ -31,6 +31,7 @@ export const useAppStore = defineStore('app', {
             remain: filament.size / 100 * filament.remain,
             filaments: [filament],
             color: filament.color,
+            colorname: filament.colorname,
             name: filament.name
           }
         } else {

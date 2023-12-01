@@ -31,6 +31,7 @@ language.homeView = {
     size: 'Größe',
     remain: 'Verbleibend',
     color: 'Farbe',
+    colorname: 'Farbname',
     spools: 'Spulen',
     actions: 'Aktionen'
   }
@@ -43,6 +44,7 @@ language.filamentDetails = {
   size: 'Größe',
   remain: 'Verbleibend',
   remaining: 'Restmenge',
+  colorname: 'Farbname',
   actions: 'Aktionen',
   successDelete: 'Filament gelöscht',
   errorDelete: 'Fehler beim Löschen des Filaments',

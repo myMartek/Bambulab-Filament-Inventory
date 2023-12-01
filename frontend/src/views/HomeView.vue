@@ -110,6 +110,19 @@
                     <v-col
                       cols="12"
                     >
+                      <v-text-field
+                        v-model="addModel.colorname"
+                        required
+                        :rules="requiredRules"
+                        :label="t('$vuetify.homeView.form.colorname')"
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
+
+                  <v-row>
+                    <v-col
+                      cols="12"
+                    >
                       <v-color-picker
                         v-model="addModel.color"
                         :label="t('$vuetify.homeView.form.color')"
@@ -154,7 +167,7 @@
       :items-per-page="-1"
     >
       <template v-slot:item.color="{ item }">
-        <v-avatar variant="elevated" :color="item.color"></v-avatar>
+        <v-avatar variant="elevated" :color="item.color"></v-avatar>&nbsp;{{ item.colorname }}
       </template>
 
       <template v-slot:item.filaments="{ item }">
@@ -222,6 +235,7 @@ const addModel = ref({
   type: '',
   name: '',
   color: '#ffffffff',
+  colorname: '',
   size: 1000,
   remain: 100,
   empty: false

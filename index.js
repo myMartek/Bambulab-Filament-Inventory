@@ -111,6 +111,7 @@ app.post('/update', async (req, res) => {
       empty: true,
       name: 'Unknown',
       size: 1000,
+      colorname: '',
       ...req.body,
       tracking: false
     };
