@@ -43,16 +43,14 @@ app.use(
     if (url.startsWith('/favicon.ico')) {
       return true;
     }
+    
+    if (url === '/login') {
+      return true;
+    }
 
     return false;
   })
 );
-
-app.get('/', async (req, res) => {
-  let content = await fs.readFile('./frontend/dist/index.html', 'utf-8');
-
-  res.send(content);
-});
 
 // Implement (deprecated) OAuth 2.0 password grant
 app.post('/oauth/token', (req, res) => {
@@ -130,6 +128,13 @@ app.post('/update', async (req, res) => {
 
 // deliver static files from frontend/dist
 app.use(express.static('frontend/dist'));
+
+// for vue-router we need to redirect all unknown routes to index.html
+app.get('*', async (req, res) => {
+  let content = await fs.readFile('./frontend/dist/index.html', 'utf-8');
+
+  res.send(content);
+});
 
 app.listen(process.env.PORT, () => {
   console.log(`App listening on port ${process.env.PORT}!`);

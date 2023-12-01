@@ -10,12 +10,14 @@ import 'vuetify/styles';
 
 // Composables
 import { createVuetify } from 'vuetify';
-import { de, en } from 'vuetify/locale';
+import de from '@/locale/de.js';
+import en from '@/locale/en.js';
 
 // https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
 export default createVuetify({
   locale: {
-    locale: 'de',
+    // get locale from browser
+    locale: navigator.language === 'de' ? 'de' : 'en',
     fallback: 'en',
     messages: { de, en },
   },

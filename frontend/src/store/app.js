@@ -92,17 +92,24 @@ export const useAppStore = defineStore('app', {
     },
 
     async getFilaments() {
-      if (!this.isLoggedIn) {
-        return;
+      try {
+        if (!this.isLoggedIn) {
+          return;
+        }
+
+        const { data } = await axios.get(host + '/filaments', {
+          headers: {
+            Authorization: `Bearer ${this.login}`,
+          },
+        });
+
+        this.filaments = data;
+      } catch (error) {
+        if (error.response?.status === 401) {
+          this.login = null;
+          sessionStorage.removeItem('token');
+        }
       }
-
-      const { data } = await axios.get(host + '/filaments', {
-        headers: {
-          Authorization: `Bearer ${this.login}`,
-        },
-      });
-
-      this.filaments = data;
     },
     async addFilament(filament) {
       try {
@@ -145,6 +152,10 @@ export const useAppStore = defineStore('app', {
       }
 
       return false;
+    },
+    logout() {
+      this.login = null;
+      sessionStorage.removeItem('token');
     }
   }
 });
