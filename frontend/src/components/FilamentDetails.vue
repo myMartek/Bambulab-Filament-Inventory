@@ -30,7 +30,13 @@
               v-for="(item, i) in filamentList"
               :key="item.tag_uid"
             >
-              <td width="10">#{{ i + 1 }}</td>
+              <td width="10">
+                <v-tooltip :text="item.tag_uid">
+                  <template v-slot:activator="{ props }">
+                    <div v-bind="props">#{{ i + 1 }}</div>
+                  </template>
+                </v-tooltip>
+              </td>
               <td>
                 <v-text-field
                   v-model="item.name"

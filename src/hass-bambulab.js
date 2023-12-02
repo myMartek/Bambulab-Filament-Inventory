@@ -74,13 +74,26 @@ export const getHassData = async () => {
         return false;
       });
 
+      let colorname = Object.values(usagedata).find((tray) => {
+        const localkey = tray.color + tray.type + tray.name + tray.manufacturer;
+
+        if (localkey === key && tray.colorname) {
+          return true;
+        }
+
+        return false;
+      })?.colorname;
+
       if (notTracked) {
         delete usagedata[notTracked.tag_uid];
         notTracked.tag_uid = tag_uid;
         notTracked.tracking = true;
+        notTracked.colorname = colorname;
         usagedata[tag_uid] = notTracked;
       } else {
         usagedata[tag_uid] = tray;
+        usagedata[tag_uid].tracking = true;
+        usagedata[tag_uid].colorname = colorname;
       }
     } else {
       usagedata[tag_uid].remain = tray.remain;

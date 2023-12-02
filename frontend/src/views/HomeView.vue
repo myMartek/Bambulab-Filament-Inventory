@@ -286,6 +286,7 @@ const additionalFilament = async (item) => {
     type: item.type,
     name: item.name,
     color: item.color,
+    colorname: item.colorname,
     size: 1000,
     remain: 100,
     empty: false
