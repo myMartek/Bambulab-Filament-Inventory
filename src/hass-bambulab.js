@@ -77,7 +77,7 @@ export const getHassData = async () => {
       if (notTracked) {
         delete usagedata[notTracked.tag_uid];
         notTracked.tag_uid = tag_uid;
-        tracking = true;
+        notTracked.tracking = true;
         usagedata[tag_uid] = notTracked;
       } else {
         usagedata[tag_uid] = tray;
