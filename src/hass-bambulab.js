@@ -106,6 +106,12 @@ export const getHassData = async () => {
     }
   });
 
+  Object.values(usagedata).forEach((tray) => {
+    if (tray.remain <= 0 && tray.remain !== -1) {
+      delete usagedata[tray.tag_uid];
+    }
+  });
+
   const hassDataJson = JSON.stringify(usagedata);
 
   await fs.writeFile('./data/hass-data.json', hassDataJson);
