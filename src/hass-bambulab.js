@@ -101,7 +101,7 @@ export const getHassData = async () => {
       usagedata[tag_uid].tracking = true;
     }
 
-    if (usagedata[tag_uid].empty) {
+    if (usagedata[tag_uid].empty || usagedata[tag_uid].remain <= 0) {
       delete usagedata[tag_uid];
     }
   });
