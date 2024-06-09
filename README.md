@@ -17,6 +17,7 @@ services:
       PORT=3000
       AUTH_USER=User
       AUTH_PASSWORD=Password!
+      TRAY_NAME=tray
     ports:
       - '3000:3000'
     restart: unless-stopped
