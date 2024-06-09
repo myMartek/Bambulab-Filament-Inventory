@@ -53,7 +53,7 @@ export const getHassData = async () => {
 
   for (let i = 0; i < sensors.length; i++) {
     for (let j = 1; j <= 4; j++) {
-      promises.push(getAMSTrays(`${sensors[i]}_tray_${j}`));
+      promises.push(getAMSTrays(`${sensors[i]}_${process.env.TRAY_NAME}_${j}`));
     }
   }
 
